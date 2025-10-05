@@ -7,6 +7,7 @@
   .nav {
     display: flex;
     gap: 20px;
+
     li {
       padding: 4px 12px;
       background-color: $second-color;
@@ -22,5 +23,15 @@
     padding: 0 12px;
     margin: 12px 0;
     border: 1px solid darken($main-background, 10%);
+  }
+}
+
+// RWD===============
+// 手機
+@media (max-width: 480px) {
+  .app-container {
+    .main-content {
+      height: calc(100vh - 160px);
+    }
   }
 }
