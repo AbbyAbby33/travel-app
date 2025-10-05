@@ -1,1 +1,55 @@
-<p>list works!</p>
+<h2>景點列表</h2>
+
+<span class="result-count">共 {{ totalCount }} 個景點</span>
+
+@if (loading) {
+<!-- 載入中 -->
+<div class="loading">
+  <div class="spinner"></div>
+  <p>載入中...</p>
+</div>
+} @else {
+<!-- 列表 -->
+<div class="attractions-list">
+  @for (attraction of attractions; track attraction.id) {
+
+  <div class="attractions-card">
+
+    <!-- 圖片 -->
+    @if(attraction.images && attraction.images.length > 0) {
+    <div class="card-image">
+      <img [src]="attraction.images[0].src" [alt]="attraction.name">
+    </div>
+    }
+
+    <!-- 內容 -->
+    <div class="card-content">
+      <h3 class="card-title">{{ attraction.name }}</h3>
+
+      <p class="card-description">
+        {{ attraction.introduction?.slice(0, 100) }}{{ attraction.introduction!.length > 100 ? '...' : '' }}
+      </p>
+
+      <div class="card-info">
+        <div class="info-item">
+          <span class="info-icon" aria-hidden="true">📍</span>
+          <span class="info-text">{{ attraction.address }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-icon" aria-hidden="true">📞</span>
+          <span class="info-text">{{ attraction.tel }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  } @empty {
+  <!-- 無資料 -->
+  <div class="no-data">
+    <p>找不到符合條件的景點</p>
+  </div>
+  }
+</div>
+}

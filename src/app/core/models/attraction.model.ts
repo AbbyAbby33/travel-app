@@ -1,0 +1,31 @@
+export interface Attraction {
+  id: number;
+  name: string;
+  name_zh: string | null;
+  open_status: number;
+  introduction?: string;
+  open_time: string;
+  zipcode: string;
+  distric: string;
+  address: string;
+  tel: string;
+  fax: string;
+  email: string;
+  months: string;
+  nlat: number;
+  elong: number;
+  official_site: string;
+  facebook: string;
+  ticket: string;
+  remind: string;
+  staytime: string;
+  modified: string;
+  url: string;
+  service: Array<any>;
+  friendly: Array<any>;
+  files: Array<any>;
+  images: Array<{ src: string; subject: string; ext: string }>;
+  target: Array<{ id: number; name: string }>;
+  category: Array<{ id: number; name: string }>;
+  links: Array<{ src: string; subject: string }>;
+}
