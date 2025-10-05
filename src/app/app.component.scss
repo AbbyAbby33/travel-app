@@ -1,0 +1,26 @@
+@import "../assets/styles/_var.scss";
+
+.app-container {
+  display: block;
+  padding: 20px;
+
+  .nav {
+    display: flex;
+    gap: 20px;
+    li {
+      padding: 4px 12px;
+      background-color: $second-color;
+
+      &:hover {
+        background-color: $second-color-dark;
+      }
+    }
+  }
+
+  .main-content {
+    height: calc(100vh - 180px);
+    padding: 0 12px;
+    margin: 12px 0;
+    border: 1px solid darken($main-background, 10%);
+  }
+}

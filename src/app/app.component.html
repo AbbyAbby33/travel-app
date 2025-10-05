@@ -1,1 +1,17 @@
-<router-outlet />
+<div class="app-container">
+  <header class="header">
+    <h1>台北旅遊景點</h1>
+  </header>
+  <ul class="nav">
+    <li><a routerLink="/attraction/list">景點列表</a></li>
+    <li><a routerLink="/attraction/favorite">我的最愛</a></li>
+  </ul>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <p>台北旅遊景點系統 | 資料來源：台北旅遊網 Open API</p>
+  </footer>
+</div>
