@@ -19,7 +19,7 @@ export class ListComponent implements OnInit, OnDestroy {
   // 分頁
   currentPage = 1;
   totalPages = 1;
-  pageSize = 12;
+  pageSize = 30;
 
   totalCount = 0;
   loading = false;
@@ -46,6 +46,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.clearList();
 
+    console.log('this.currentPage:', this.currentPage);
     this.attractionService.getAttractions(this.currentPage, this.selectedCategory)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -85,8 +86,52 @@ export class ListComponent implements OnInit, OnDestroy {
   clearList(): void {
     this.attractions = [];
     this.totalCount = 0;
-    this.totalPages = 1;
-    this.currentPage = 1;
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadAttractions();
+      this.scrollToTop();
+    }
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadAttractions();
+      this.scrollToTop();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadAttractions();
+      this.scrollToTop();
+    }
+  }
+
+  getPageRange(): number[] {
+    const range: number[] = [];
+    const maxVisible = 5;
+
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(this.totalPages, start + maxVisible - 1);
+
+    if (end - start < maxVisible - 1) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    return range;
   }
 
   ngOnDestroy(): void {

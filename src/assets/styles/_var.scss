@@ -14,3 +14,11 @@ $primary-color-dark: darken($primary-color, 10%);
 $second-color: #5ABCB9;
 $second-color-light: lighten($second-color, 20%);
 $second-color-dark: darken($second-color, 10%);
+
+@mixin button-base {
+  padding: 4px 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
