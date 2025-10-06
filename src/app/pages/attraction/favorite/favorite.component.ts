@@ -126,6 +126,50 @@ export class FavoriteComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleSelectAll(): void {
+    if (this.isAllSelected()) {
+      this.selectedFavorites.clear();
+    } else {
+      this.displayedFavorites.forEach(fav => this.selectedFavorites.add(fav.id));
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.displayedFavorites.length > 0 &&
+      this.displayedFavorites.every(fav => this.selectedFavorites.has(fav.id));
+  }
+
+  isSelected(attractionId: number): boolean {
+    return this.selectedFavorites.has(attractionId);
+  }
+
+  toggleSelection(attractionId: number): void {
+    if (this.selectedFavorites.has(attractionId)) {
+      this.selectedFavorites.delete(attractionId);
+    } else {
+      this.selectedFavorites.add(attractionId);
+    }
+  }
+
+  removeFromFavorites(attractionId: number): void {
+    const confirmed = confirm('確定要移除這個景點嗎？');
+    if (confirmed) {
+      this.attractionUiService.removeFromFavorites(attractionId);
+      this.selectedFavorites.clear();
+    }
+  }
+
+  // 多個移除
+  removeSelectedFromFavorites(): void {
+    if (this.selectedFavorites.size === 0) return;
+
+    const confirmed = confirm(`確定要移除 ${this.selectedFavorites.size} 個景點嗎？`);
+    if (confirmed) {
+      this.attractionUiService.removeMultipleFromFavorites(Array.from(this.selectedFavorites));
+      this.selectedFavorites.clear();
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

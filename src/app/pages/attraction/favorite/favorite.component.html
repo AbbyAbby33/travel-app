@@ -2,6 +2,27 @@
 
 <p class="result-count">共 {{ favorites.length }} 個收藏景點</p>
 
+<!-- 我的最愛操作 -->
+@if (displayedFavorites.length > 0) {
+<div class="batch-actions">
+  <div class="batch-left">
+    <label class="checkbox-label">
+      <input type="checkbox" [checked]="isAllSelected()" (change)="toggleSelectAll()">
+      <span> 全選</span>
+    </label>
+    @if (selectedFavorites.size > 0) {
+    <span class="selected-count">
+      已選 {{ selectedFavorites.size }} 項
+    </span>
+    }
+  </div>
+
+  <button class="btn" [disabled]="selectedFavorites.size === 0" (click)="removeSelectedFromFavorites()">
+    移除我的最愛
+  </button>
+</div>
+}
+
 <div class="favorite-list">
   @for (favorite of displayedFavorites; track favorite.id) {
   <!-- 我的最愛列表 -->
@@ -18,6 +39,12 @@
     @if (!isEditing(favorite.id)){
     <!-- 顯示模式 -->
     <div class="card-view card-content">
+      <div class="favorite-operate">
+        <div class="card-checkbox">
+          <input type="checkbox" [checked]="isSelected(favorite.id)" (change)="toggleSelection(favorite.id)">
+        </div>
+      </div>
+      
       <h3 class="card-title">{{ favorite.name }}</h3>
 
       <p class="card-description">
@@ -40,7 +67,7 @@
         <button class="btn btn-edit" (click)="startEdit(favorite)">
           編輯
         </button>
-        <button class="btn btn-remove">
+        <button class="btn btn-remove" (click)="removeFromFavorites(favorite.id)">
           移除
         </button>
       </div>

@@ -78,4 +78,24 @@ export class AttractionUiService {
       this.saveFavorites([...currentFavorites]);
     }
   }
+
+  /**
+   * 從我的最愛中移除
+   */
+  removeFromFavorites(attractionId: number): void {
+    const currentFavorites = this.getFavorites();
+    const updatedFavorites = currentFavorites.filter(fav => fav.id !== attractionId);
+    this.saveFavorites(updatedFavorites);
+  }
+
+  /**
+   * 多個從我的最愛中移除
+   */
+  removeMultipleFromFavorites(attractionIds: number[]): void {
+    const currentFavorites = this.getFavorites();
+    const updatedFavorites = currentFavorites.filter(
+      fav => !attractionIds.includes(fav.id)
+    );
+    this.saveFavorites(updatedFavorites);
+  }
 }
