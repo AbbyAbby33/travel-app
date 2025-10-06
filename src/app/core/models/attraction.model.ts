@@ -1,3 +1,4 @@
+import { KeyValueItem } from './category.model';
 export interface Attraction {
   id: number;
   name: string;
@@ -21,11 +22,11 @@ export interface Attraction {
   staytime: string;
   modified: string;
   url: string;
-  service: Array<any>;
-  friendly: Array<any>;
+  service: Array<KeyValueItem>;
+  friendly: Array<KeyValueItem>;
   files: Array<any>;
   images: Array<{ src: string; subject: string; ext: string }>;
-  target: Array<{ id: number; name: string }>;
-  category: Array<{ id: number; name: string }>;
+  target: Array<KeyValueItem>;
+  category: Array<KeyValueItem>;
   links: Array<{ src: string; subject: string }>;
 }

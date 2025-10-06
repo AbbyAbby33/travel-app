@@ -1,5 +1,17 @@
 <h2>景點列表</h2>
 
+<div class="filter-group">
+  <label for="category-select" class="filter-label">選擇分類</label>
+  <select id="category-select" class="filter-select" [(ngModel)]="selectedCategory"
+    (change)="onCategoryChange(selectedCategory)">
+    @for (category of categories; track $index) {
+    <option [value]="category.id">
+      {{ category.name }}
+    </option>
+    }
+  </select>
+</div>
+
 <span class="result-count">共 {{ totalCount }} 個景點</span>
 
 @if (loading) {

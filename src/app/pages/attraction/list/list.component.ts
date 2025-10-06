@@ -4,10 +4,12 @@ import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { Attraction } from '../../../core/models/attraction.model';
 // import { MOCK_ATTRACTIONS } from '../../../../assets/mock-data/attractions.mock';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { KeyValueItem } from '../../../core/models/category.model';
 
 @Component({
   selector: 'app-list',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -22,6 +24,9 @@ export class ListComponent implements OnInit, OnDestroy {
   totalCount = 0;
   loading = false;
 
+  categories: KeyValueItem[] = [];
+  selectedCategory = 'all';
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -30,6 +35,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadAttractions();
+    this.loadCategories();
     // this.attractions = MOCK_ATTRACTIONS.data;
   }
 
@@ -38,7 +44,9 @@ export class ListComponent implements OnInit, OnDestroy {
    */
   loadAttractions(): void {
     this.loading = true;
-    this.attractionService.getAttractions(this.currentPage)
+    this.clearList();
+
+    this.attractionService.getAttractions(this.currentPage, this.selectedCategory)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
@@ -52,6 +60,33 @@ export class ListComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
+  }
+
+  /**
+   * 載入分類列表
+   */
+  loadCategories(): void {
+    this.attractionService.getCategories('Attractions')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.categories = value.data.Category ? value.data.Category : [];
+      });
+  }
+
+  /**
+ * 切換分類
+ */
+  onCategoryChange(categoryId: string): void {
+    this.selectedCategory = categoryId;
+    this.currentPage = 1;
+    this.loadAttractions();
+  }
+
+  clearList(): void {
+    this.attractions = [];
+    this.totalCount = 0;
+    this.totalPages = 1;
+    this.currentPage = 1;
   }
 
   ngOnDestroy(): void {
