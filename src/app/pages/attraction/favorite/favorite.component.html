@@ -1,1 +1,123 @@
-<p>favorite works!</p>
+<h2 class="page-title">我的最愛</h2>
+
+<p class="result-count">共 {{ favorites.length }} 個收藏景點</p>
+
+<div class="favorite-list">
+  @for (favorite of displayedFavorites; track favorite.id) {
+  <!-- 我的最愛列表 -->
+  <div class="favorite-card" [class.editing]="isEditing(favorite.id)">
+
+    <!-- 圖片 -->
+    @if(favorite.images && favorite.images.length > 0) {
+    <div class="card-image">
+      <img [src]="favorite.images[0].src" [alt]="favorite.name">
+    </div>
+    }
+
+    <!-- 內容 -->
+    @if (!isEditing(favorite.id)){
+    <!-- 顯示模式 -->
+    <div class="card-view card-content">
+      <h3 class="card-title">{{ favorite.name }}</h3>
+
+      <p class="card-description">
+        {{ favorite.introduction | slice:0:100 }}{{ favorite.introduction!.length > 100 ? '...' : '' }}
+      </p>
+
+      <div class="card-info">
+        <div class="info-item">
+          <span class="info-icon">📍</span>
+          <span class="info-text">{{ favorite.address }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-icon">📞</span>
+          <span class="info-text">{{ favorite.tel }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-edit" (click)="startEdit(favorite)">
+          編輯
+        </button>
+        <button class="btn btn-remove">
+          移除
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- 編輯模式 -->
+    @if (isEditing(favorite.id)) {
+    <div class="card-edit card-content">
+      <form [formGroup]="editForm" (ngSubmit)="saveEdit(favorite)">
+        <div class="edit-header">
+          <h3>編輯景點資訊</h3>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="form-label">
+            景點名稱 <span class="required">*</span>
+          </label>
+          <input type="text" id="name" class="form-control" formControlName="name" placeholder="請輸入景點名稱">
+          @if (formControls['name'].invalid && formControls['name'].touched) {
+          <div class="error-message">
+            @if (formControls['name'].errors?.['required']) {
+            <span>
+              景點名稱為必填欄位
+            </span>
+            }
+            @if (formControls['name'].errors?.['minlength']) {
+            <span>
+              景點名稱至少需要2個字元
+            </span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="address" class="form-label">地址</label>
+          <input type="text" id="address" class="form-control" formControlName="address" placeholder="請輸入地址">
+        </div>
+
+        <div class="form-group">
+          <label for="tel" class="form-label">電話</label>
+          <input type="text" id="tel" class="form-control" formControlName="tel" placeholder="請輸入電話號碼">
+          @if (formControls['tel'].invalid && formControls['tel'].touched) {
+          <div class="error-message">
+            @if (formControls['tel'].errors?.['containsChinese']) {
+            <span>
+              電話號碼不可包含中文字元
+            </span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="introduction" class="form-label">景點介紹</label>
+          <textarea id="introduction" class="form-control" formControlName="introduction" rows="4"
+            placeholder="請輸入景點介紹"></textarea>
+        </div>
+
+        <div class="card-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+            取消
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">
+            儲存
+          </button>
+        </div>
+      </form>
+    </div>
+    }
+
+  </div>
+  } @empty {
+  <!-- 無資料 -->
+  <div class="no-data">
+    <p>目前沒有收藏的景點</p>
+  </div>
+  }
+</div>

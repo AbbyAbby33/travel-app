@@ -8,6 +8,7 @@ import { Attraction } from '../../../core/models/attraction.model';
 export class AttractionUiService {
 
   private favoritesSubject = new BehaviorSubject<Attraction[]>(this.loadFavorites());
+  public favorites$ = this.favoritesSubject.asObservable();
 
   constructor() { }
 
@@ -65,4 +66,16 @@ export class AttractionUiService {
     }
   }
 
+  /**
+   * 更新我的最愛中的景點資料
+   */
+    updateFavorite(updatedAttraction: Attraction): void {
+    const currentFavorites = this.getFavorites();
+    const index = currentFavorites.findIndex(fav => fav.id === updatedAttraction.id);
+
+    if (index !== -1) {
+      currentFavorites[index] = updatedAttraction;
+      this.saveFavorites([...currentFavorites]);
+    }
+  }
 }
