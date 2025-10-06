@@ -14,6 +14,27 @@
 
 <span class="result-count">共 {{ totalCount }} 個景點</span>
 
+<!-- 我的最愛操作 -->
+ @if (attractions.length > 0) {
+<div class="batch-actions">
+  <div class="batch-left">
+    <label class="checkbox-label">
+      <input type="checkbox" [checked]="isAllSelected()" (change)="toggleSelectAll()">
+      <span> 全選</span>
+    </label>
+    @if (selectedAttractions.size > 0) {
+      <span class="selected-count">
+        已選 {{ selectedAttractions.size }} 項
+      </span>
+    }
+  </div>
+
+  <button class="btn" [disabled]="selectedAttractions.size === 0" (click)="addSelectedToFavorites()">
+    加入我的最愛
+  </button>
+</div>
+}
+
 @if (loading) {
 <!-- 載入中 -->
 <div class="loading">
@@ -36,6 +57,17 @@
 
     <!-- 內容 -->
     <div class="card-content">
+
+      <div class="favorite-operate">
+        @if(isFavorite(attraction.id)) {
+        <span>❤️</span>
+        } @else {
+        <div class="card-checkbox">
+          <input type="checkbox" [checked]="isSelected(attraction.id)" (change)="toggleSelection(attraction.id)">
+        </div>
+        }
+      </div>
+
       <h3 class="card-title">{{ attraction.name }}</h3>
 
       <p class="card-description">

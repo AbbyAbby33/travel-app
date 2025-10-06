@@ -6,6 +6,7 @@ import { Attraction } from '../../../core/models/attraction.model';
 // import { MOCK_ATTRACTIONS } from '../../../../assets/mock-data/attractions.mock';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { KeyValueItem } from '../../../core/models/category.model';
+import { AttractionUiService } from './services/attraction-ui.service';
 
 @Component({
   selector: 'app-list',
@@ -27,10 +28,13 @@ export class ListComponent implements OnInit, OnDestroy {
   categories: KeyValueItem[] = [];
   selectedCategory = 'all';
 
+  selectedAttractions: Set<number> = new Set();
+
   private destroy$ = new Subject<void>();
 
   constructor(
-    private attractionService: AttractionService
+    private attractionService: AttractionService,
+    private attractionUiService: AttractionUiService
   ) { }
 
   ngOnInit(): void {
@@ -45,8 +49,8 @@ export class ListComponent implements OnInit, OnDestroy {
   loadAttractions(): void {
     this.loading = true;
     this.clearList();
+    this.selectedAttractions.clear();
 
-    console.log('this.currentPage:', this.currentPage);
     this.attractionService.getAttractions(this.currentPage, this.selectedCategory)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -132,6 +136,52 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     return range;
+  }
+
+  isFavorite(attractionId: number): boolean {
+    return this.attractionUiService.isFavorite(attractionId);
+  }
+
+  isSelected(attractionId: number): boolean {
+    return this.selectedAttractions.has(attractionId);
+  }
+
+  toggleSelection(attractionId: number): void {
+    if (this.selectedAttractions.has(attractionId)) {
+      this.selectedAttractions.delete(attractionId);
+    } else {
+      this.selectedAttractions.add(attractionId);
+    }
+    console.log('this.selectedAttractions:', this.selectedAttractions);
+  }
+
+  toggleSelectAll(): void {
+    if (this.isAllSelected()) {
+      this.selectedAttractions.clear();
+    } else {
+      this.attractions
+        .filter(attr => !this.isFavorite(attr.id)) // 排除已是最愛
+        .forEach(attr => this.selectedAttractions.add(attr.id));
+    }
+  }
+
+  isAllSelected(): boolean {
+    // 只檢查未加入最愛的景點是否都被選取
+    const selectable = this.attractions.filter(attr => !this.isFavorite(attr.id));
+    return selectable.length > 0 &&
+      selectable.every(attr => this.selectedAttractions.has(attr.id));
+  }
+
+  addSelectedToFavorites(): void {
+    const selectedItems = this.attractions.filter(
+      attr => this.selectedAttractions.has(attr.id)
+    );
+
+    if (selectedItems.length > 0) {
+      this.attractionUiService.addMultipleToFavorites(selectedItems);
+      this.selectedAttractions.clear();
+      alert(`成功加入${selectedItems.length}個景點到我的最愛`);
+    }
   }
 
   ngOnDestroy(): void {
