@@ -159,6 +159,71 @@
   }
 }
 
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 12px 0;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+}
+
+.page-btn {
+  @include button-base;
+  background: #fff;
+  color: $primary-color;
+  border: 2px solid $primary-color;
+
+  &:hover:not(:disabled) {
+    background: $primary-color;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+.page-numbers {
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.page-number {
+  @include button-base;
+  min-width: 28px;
+  padding: 6px;
+  background: #fff;
+  color: $text-dark;
+  border: 2px solid $text-second;
+
+  &:hover:not(:disabled) {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+
+  &.active {
+    background: $primary-color;
+    color: #fff;
+    border-color: $primary-color;
+  }
+}
+
+.page-ellipsis {
+  padding: 0 0.5rem;
+}
+
 // RWD
 @media (max-width: 768px) {
   .favorite-card {

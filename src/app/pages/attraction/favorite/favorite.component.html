@@ -148,3 +148,44 @@
   </div>
   }
 </div>
+
+<!-- 分頁 -->
+@if (displayedFavorites.length > 0) {
+<div class="pagination">
+  <button class="page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+    上一頁
+  </button>
+
+  <!-- 中間頁碼 -->
+  <div class="page-numbers">
+    @if (currentPage > 3) {
+    <button class="page-number" (click)="goToPage(1)">
+      1
+    </button>
+    }
+
+    @if( currentPage > 3) {
+    <span class="page-ellipsis">...</span>
+    }
+
+    @for (page of getPageRange(); track $index) {
+    <button class="page-number" [class.active]="page === currentPage" (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    }
+
+    @if (currentPage < totalPages - 2) { <span class="page-ellipsis">...</span>
+      }
+
+      @if (currentPage < totalPages - 2) { <button class="page-number" (click)="goToPage(totalPages)">
+        {{ totalPages }}
+        </button>
+        }
+
+  </div>
+
+  <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+    下一頁
+  </button>
+</div>
+}
