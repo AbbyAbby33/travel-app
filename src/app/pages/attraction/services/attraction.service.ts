@@ -3,9 +3,9 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { ApiResponse } from '../../../../core/models/general.model';
-import { Attraction } from '../../../../core/models/attraction.model';
-import { CategoriesData, CategoriesResponse } from '../../../../core/models/category.model';
+import { ApiResponse } from '../../../core/models/general.model';
+import { Attraction } from '../../../core/models/attraction.model';
+import { CategoriesData, CategoriesResponse } from '../../../core/models/category.model';
 
 @Injectable({
   providedIn: 'root'

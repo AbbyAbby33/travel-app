@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AttractionService } from './services/attraction.service';
+import { AttractionService } from '../services/attraction.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { Attraction } from '../../../core/models/attraction.model';
 // import { MOCK_ATTRACTIONS } from '../../../../assets/mock-data/attractions.mock';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { KeyValueItem } from '../../../core/models/category.model';
-import { AttractionUiService } from './services/attraction-ui.service';
+import { AttractionUiService } from '../services/attraction-ui.service';
 
 @Component({
   selector: 'app-list',
